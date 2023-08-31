@@ -1,0 +1,7673 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <TITLE>VAPLOJA</TITLE>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>:: ERP - SOFTWARE GERENCIADOR ADMINISTRATIVO INTEGRADO À WEB ::</title>
+    <link href="../acoes/stilo.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <script type="text/javascript" src="../acoes/js/jquery.js"></script>
+        <script type="text/javascript">var xajaxRequestUri="https://www.vaploja.com.br/erp/cadastro/tprodutolista.php";</script>
+	<script type="text/javascript" src="https://www.vaploja.com.br/erp/cadastro/tprodutolista.php?xajaxjs=xajaxjs"></script>
+
+    <style type="text/css">
+        .page {
+            page-break-before: always;
+        }
+
+        /*  @page {
+	margin: 1cm;
+    } */
+    </style>
+</head>
+
+<body>
+<form name="formulario" method="post" action="tprodutolista.php" >
+
+    	<script type="text/javascript" src="../acoes/js/fancybox/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="../acoes/js/fancybox/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+ 	<link rel="stylesheet" href="../acoes/js/fancybox/style.css" />
+
+<script type="text/javascript">
+
+	function submitenter(myfield,e)
+	{
+		var keycode;
+		if (window.event) keycode = window.event.keyCode;
+		else if (e) keycode = e.which;
+		else return true;
+
+		if (keycode == 13)
+		{
+			buscar_detalhada();
+			return false;
+		}
+		else
+			return true;
+	}
+
+	function vercodigobarras(codigoproduto,tabela)
+	{
+		x = 500;
+		y = 330;
+		propriedades = "toolbar=no,menubar=yes,scrollbars=yes,width=" + x + ",height=" + y;
+		nurl = "tprodutoimprime.php?codigoproduto=" + codigoproduto + "&tabela=" + tabela;
+		window.open(nurl,'janela',propriedades);
+		document.formulario.target="janela";
+	}
+
+	function verproduto(codigoproduto)
+	{
+		x = 760;
+		y = 430;
+		propriedades = "toolbar=no,menubar=yes,scrollbars=yes,width=" + x + ",height=" + y;
+		nurl = "tprodutoexibe.php?codigoproduto=" + codigoproduto;
+		window.open(nurl,'janela',propriedades);
+	}
+
+	function imprimir(acao)
+	{
+		window.print();
+	}
+
+	function mostrafoto(codigo,mostra)
+	{
+		x = 700;
+		y = 430;
+		propriedades = "toolbar=no,menubar=yes,scrollbars=yes,width=" + x + ",height=" + y;
+		nurl = "fotomostra.php?prd_codigo=" + codigo + "&mostra=" + mostra;
+		window.open(nurl,'janela',propriedades);
+	}
+
+	function imprimiretiqueta(prd_codigo)
+	{
+		x = 700;
+		y = 430;
+		propriedades = "toolbar=no,menubar=yes,scrollbars=yes,width=" + x + ",height=" + y;
+		nurl = "etiquetaproduto.php?prd_codigo=" + prd_codigo;
+		window.open(nurl,'janela',propriedades);
+	}
+
+	function exportardetalhes() {
+
+		$('#inline1').show();
+		$('.l-box').show();
+		// $('#various1').trigger("click");
+	}
+
+	function getvaluexp(){
+		var x = document.getElementsByName('radexp')
+		for(var k=0;k<x.length;k++)
+			if(x[k].checked){
+				x1= x[k].value;
+			}
+			return x1;
+		}
+
+    function exportar(exporta_tipo2)
+    {
+        x = getvaluexp();
+        document.formulario.exporta_tipo.value=x;
+        document.formulario.exporta_tipo2.value=exporta_tipo2;
+        document.formulario.nova_slc.value=nova_selecao.value+",@";
+        //var w = document.getElementById("quantidadePrd").value"
+                    document.formulario.action='tprodutoexporta.php';
+                     if(exporta_tipo2 == "4") {
+			document.formulario.action='tprodutoexportapdf.php';
+		}
+
+        document.formulario.submit();
+    }
+
+function exportarMais(){
+
+	var w2 = document.getElementById("tamanhoBob").value;
+	var exb = document.getElementById("chkExibirPreco").checked;
+	var prd_intervalo = document.getElementById("nova_selecao").value;
+	if(prd_intervalo)
+		intervalo = "&intervalo=" + prd_intervalo;
+	else
+		intervalo = "";
+
+	document.formulario.action='tprodutoexportamais.php?tamanhoBob='+w2+'&exibirPreco='+ exb +'' + "&marca=" + intervalo;
+	document.formulario.submit();
+}
+
+function buscar_detalhada() {
+	document.formulario.action="tprodutolista.php";
+	document.formulario.submit();
+}
+
+function descontocoletivo() {
+	document.formulario.action="../acoes/executa.php";
+	document.formulario.acao.value='descontocoletivo';
+	document.formulario.submit();
+}
+
+function mostra(div){
+	var abreDiv = document.getElementById(div);
+	abreDiv.style.display = 'block';
+}
+function fecha(div){
+	var fechaDiv = document.getElementById(div);
+	fechaDiv.style.display = 'none';
+}
+
+function sel() {
+	with(document.formulario) {
+		for(i=0;i<elements.length;i++) {
+			thiselm = elements[i];
+			//alert(thiselm.name);
+			if(thiselm.name.substring(0,3) == 'chk')
+				if(document.formulario.quitartodos.checked)
+					thiselm.checked = "checked"
+				else
+					thiselm.checked = ""
+			}
+		}
+}
+
+	$(()=>{
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '60%',
+            'height': '90%',
+            'autoScale': false
+        })
+        $('.l-box').click(function(){
+			$(this).fadeOut();
+			$('#inline1').fadeOut();
+		})
+	})
+
+    $(()=>{
+		$("#fancyEditImage").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '60%',
+            'height': '90%',
+            'autoScale': false
+        })
+	})
+
+/**
+ * Função para mostrar e esconder uma div e alterar o value do input do Status Busca Avançada
+ * Necessario passar na função a id da div.
+ */
+function toggleBuscaAvancada(idDiv){
+	div = document.getElementById(idDiv);
+
+	// Captura os elementos da Busca
+	var icon    = document.querySelector("button.btnBuscaAvancada i");
+	var bscAvanActive = document.getElementById("bscAvanActive");
+
+	if (div.style.display == 'none') {
+		div.style.display = 'block';
+		icon.classList.remove('fa-arrow-down');
+        icon.classList.add('fa-arrow-up');
+		bscAvanActive.value = "S";
+	} else if (div.style.display == 'block') {
+		div.style.display = 'none';
+		icon.classList.remove('fa-arrow-up');
+        icon.classList.add('fa-arrow-down');
+		bscAvanActive.value = "N";
+	}
+}
+
+function saurus_check()
+{
+    saurus = document.getElementById("exibir_saurus");
+    if (saurus.checked == true) {
+        document.getElementById("exibir_s_cfop").checked = true;
+        document.getElementById("exibir_s_preco").checked = true;
+        document.getElementById("exibir_s_ncm_aliquota").checked = true;
+        document.getElementById("exibir_s_ncm").checked = true;
+    } else {
+        document.getElementById("exibir_s_cfop").checked = false;
+        document.getElementById("exibir_s_preco").checked = false;
+        document.getElementById("exibir_s_ncm_aliquota").checked = false;
+        document.getElementById("exibir_s_ncm").checked = false;
+    }
+}
+</script>
+
+<script type="text/javascript" src="../classes/funcoes.js.php"></script>
+
+
+	    <br />
+        <div id="alert_msg"></div>
+		<table  class="lista" id="lista" width="100%" border="0" cellpadding="0" cellspacing="0">
+				<THEAD>
+		<tr class="tr_">
+			<th width="1%" nowrap><input type="checkbox" name="quitartodos" onclick="sel()" class="nao_imprimir" title="Sequencial"><a href="tprodutolista.php?ordena=6&x=1">Seq.</a></th>
+			<th nowrap><a href="tprodutolista.php?ordena=7&x=1">Cod Interno</a></th>
+
+
+							<th><a href="tprodutolista.php?ordena=1&x=1">Categoria</a></th>
+									<th><a href="tprodutolista.php?ordena=2&x=1">Nome</a></th>
+							<th>UN</th>
+
+            <th><a href="tprodutolista.php?ordena=8&x=1">Local</a></th><th>Modelo</th>
+
+                            <th nowrap>
+                <a href="tprodutolista.php?ordena=3&x=1">P.C. (R$)</a>
+                </th>
+                        <th nowrap><a href="tprodutolista.php?ordena=8&x=1">P.V. (R$)</a></th>
+            <th>Qtd.&nbsp;</th>
+
+          <th width="60px"></th>
+      </tr>
+
+  </THEAD>
+  <tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_35" value="35" class="nao_imprimir">
+  		35  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('35')">1046 TCA SAT CFE SP TS1000 SERIE  000625001-71</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>600,00</td><td>600,00</td><td>99,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_20" value="20" class="nao_imprimir">
+  		20  	</td>
+  	<td align='center'>
+  		000000000001019818</td><td>HD</td><td>
+  		<a href="javascript:verproduto('20')">BRCB10081 - TM-T20 USB</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td>No: 5 Prod. Adq. Fornec. AGIS </td><td>500,00</td><td>500,00</td><td>-4,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_34" value="34" class="nao_imprimir">
+  		34  	</td>
+  	<td align='center'>
+  		000000000001030044</td><td>HD</td><td>
+  		<a href="javascript:verproduto('34')">C31CB10083 EPSON TMT20 ETHERNET</a>
+  		</td><td align='center'>PEC</td><td align='center'></td><td>Nota Fiscal Emitida nos termos</td><td>700,00</td><td>700,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_27" value="27" class="nao_imprimir">
+  		27  	</td>
+  	<td align='center'>
+  		TR414</td><td>HD</td><td>
+  		<a href="javascript:verproduto('27')">CABO USB</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>6,00</td><td>6,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_11" value="11" class="nao_imprimir">
+  		11  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('11')">Certificado Digital A1</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>6,00</td><td>6,00</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_43" value="43" class="nao_imprimir">
+  		43  	</td>
+  	<td align='center'>
+  		M-CSMP10-2</td><td>HD</td><td>
+  		<a href="javascript:verproduto('43')">Conjunto aumento comprimento do cabo piranÃƒÂ´metro SMP10 torre 20 metros</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>635,00</td><td>635,00</td><td>-200,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_42" value="42" class="nao_imprimir">
+  		42  	</td>
+  	<td align='center'>
+  		M-CSMP10-1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('42')">Conjunto aumento comprimento do cabo piranÃƒÂ´metro SMP10 tracker 100 metros</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>1.095,00</td><td>1.095,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_44" value="44" class="nao_imprimir">
+  		44  	</td>
+  	<td align='center'>
+  		M-WSC-1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('44')">Conjunto aumento comprimento do cabo sensor WS600 20 metros</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>635,00</td><td>635,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_45" value="45" class="nao_imprimir">
+  		45  	</td>
+  	<td align='center'>
+  		M-PT1000C-1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('45')">Conjunto conversor de sinal entrada PT1000 e saÃƒÂ­da 4-20 mA 30 metros de cabo</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>1.041,25</td><td>1.041,25</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_46" value="46" class="nao_imprimir">
+  		46  	</td>
+  	<td align='center'>
+  		007260</td><td>HD</td><td>
+  		<a href="javascript:verproduto('46')">Dispositivo de ProteÃƒÂ§ÃƒÂ£o contra Surtos (DPS) Clamper RS485</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>275,00</td><td>275,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_31" value="31" class="nao_imprimir">
+  		31  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('31')">Impressora Bematech MP 4200 TH USB KIT</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>785,00</td><td>785,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_4" value="4" class="nao_imprimir">
+  		4  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('4')">IMPRESSORA DARUMA 800</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>800,00</td><td>800,00</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_5" value="5" class="nao_imprimir">
+  		5  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('5')">IMPRESSORA EPSON TMT 20</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>720,00</td><td>720,00</td><td>-2,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_13" value="13" class="nao_imprimir">
+  		13  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('13')">IMPRESSORA EPSON TMT20 ETH</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>850,00</td><td>850,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_10" value="10" class="nao_imprimir">
+  		10  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('10')">IMPRESSORA MULTIFUNCIONAL HP</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>329,00</td><td>329,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_28" value="28" class="nao_imprimir">
+  		28  	</td>
+  	<td align='center'>
+  		001746</td><td>HD</td><td>
+  		<a href="javascript:verproduto('28')">IMPRESSORA TERMICA EPSON TM T20 USB</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td>ESN: RV2M166657, RV2M166664, R</td><td>548,90</td><td>548,90</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_24" value="24" class="nao_imprimir">
+  		24  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('24')">iPhone 7 32GB Desbloqueado IOS 10 4G Câmera 12MP Apple</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>2.889,00</td><td>2.889,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_30" value="30" class="nao_imprimir">
+  		30  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('30')">KIT DESENVOLVEDOR SIST. AUTENTICADOR E TRANSMISSOR DE CF-E- S@T-ICMS</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>0,00</td><td>0,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_37" value="37" class="nao_imprimir">
+  		37  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('37')">LEITOR DE CODIGO DE BARRAS</a>
+  		</td><td align='center'>PC</td><td align='center'></td><td></td><td>175,00</td><td>175,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_36" value="36" class="nao_imprimir">
+  		36  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('36')">LEITOR TANCA LT 120</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>130,00</td><td>130,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_23" value="23" class="nao_imprimir">
+  		23  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('23')">MacBook Air MQD32BZ/A com Intel Core i5 Dual Core 8GB 128GB SSD Tela 13" Prata - Apple</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>4.827,00</td><td>4.827,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_18" value="18" class="nao_imprimir">
+  		18  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('18')">MAXI PULSEIRA JEANNE OURO</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>0,00</td><td>0,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_22" value="22" class="nao_imprimir">
+  		22  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('22')">NOTEBOOK LENOVO IDEAPAD</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>2.250,00</td><td>2.250,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_32" value="32" class="nao_imprimir">
+  		32  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('32')">Placa Bematech Interface Ethernet p/ MP4200</a>
+  		</td><td align='center'>PC</td><td align='center'></td><td></td><td>142,50</td><td>142,50</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_26" value="26" class="nao_imprimir">
+  		26  	</td>
+  	<td align='center'>
+  		413013</td><td>HD</td><td>
+  		<a href="javascript:verproduto('26')">PN 165/70 R13 79T SP TOURING T1 JP EV</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>163,00</td><td>163,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_1" value="1" class="nao_imprimir">
+  		1  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('1')">SAT</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>1.100,00</td><td>1.100,00</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_6" value="6" class="nao_imprimir">
+  		6  	</td>
+  	<td align='center'>
+  		Seq 2</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('6')">SAT DIMEP</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td>D-SAT VERSAO: 01.02.00</td><td>1.100,00</td><td>1.100,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_25" value="25" class="nao_imprimir">
+  		25  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('25')">SAT GERSAT</a>
+  		</td><td align='center'>KG</td><td align='center'></td><td></td><td>1.100,00</td><td>1.100,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_19" value="19" class="nao_imprimir">
+  		19  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>HD</td><td>
+  		<a href="javascript:verproduto('19')">SAT TANCA TS-1000 </a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>700,00</td><td>700,00</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_14" value="14" class="nao_imprimir">
+  		14  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('14')">SAT TS-1000</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>920,00</td><td>920,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_38" value="38" class="nao_imprimir">
+  		38  	</td>
+  	<td align='center'>
+  		M-SMP1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('38')">Suporte metÃƒÂ¡lico inox 304 para fixaÃƒÂ§ÃƒÂ£o de piranÃƒÂ´metro SMP10 em torre ou tubo</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>410,00</td><td>410,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_39" value="39" class="nao_imprimir">
+  		39  	</td>
+  	<td align='center'>
+  		M-SMP2</td><td>HD</td><td>
+  		<a href="javascript:verproduto('39')">Suporte metÃƒÂ¡lico inox 304 para fixaÃƒÂ§ÃƒÂ£o de piranÃƒÂ´metro SMP10 em tracker</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>490,00</td><td>490,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_29" value="29" class="nao_imprimir">
+  		29  	</td>
+  	<td align='center'>
+  		000684</td><td>HD</td><td>
+  		<a href="javascript:verproduto('29')">TANCA SAT - TS-1000</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>920,00</td><td>920,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_21" value="21" class="nao_imprimir">
+  		21  	</td>
+  	<td align='center'>
+  		TCDL0803</td><td>HD</td><td>
+  		<a href="javascript:verproduto('21')">TELEFONE CELULAR LGX230DS.ABTMBN K4 NOVO MARROM TI</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td>SERIAIS: 353884084366897 - MER</td><td>480,00</td><td>480,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_41" value="41" class="nao_imprimir">
+  		41  	</td>
+  	<td align='center'>
+  		M-TM1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('41')">Torre para fixaÃƒÂ§ÃƒÂ£o de equipamentos meteorolÃƒÂ³gicos, feita em alumÃƒÂ­nio e com 1,5 metro de </a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>791,25</td><td>791,25</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_48" value="48" class="nao_imprimir">
+  		48  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('48')">TS-1000   SERIE 001237372-90</a>
+  		</td><td align='center'>UN</td><td align='center'></td><td></td><td>795,05</td><td>795,05</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_branca">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_47" value="47" class="nao_imprimir">
+  		47  	</td>
+  	<td align='center'>
+  		&nbsp;</td><td>ACESSÓRIOS</td><td>
+  		<a href="javascript:verproduto('47')">TS-1000  SERIE 001236207-75</a>
+  		</td><td align='center'>PC</td><td align='center'></td><td></td><td>739,00</td><td>739,00</td><td>0,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr><tr class="linha_">
+  	<td align='left' nowrap>
+  		<input type="checkbox" name="chk_prd_codigo[]" id="chk_prd_codigo_40" value="40" class="nao_imprimir">
+  		40  	</td>
+  	<td align='center'>
+  		M-WS1</td><td>HD</td><td>
+  		<a href="javascript:verproduto('40')">Tubo e suporte para fixaÃƒÂ§ÃƒÂ£o de sensor meteorolÃƒÂ³gico compacto WS600 Luft em torre ou tubo</a>
+  		</td><td align='center'>uni</td><td align='center'></td><td></td><td>295,00</td><td>295,00</td><td>1,00</td>
+<script type="text/javascript">
+
+	$(function(){
+		$("[name=radexp]").on("click",function(){
+			if($(this).val()!="4") {
+				$("#nova_selecao").attr("disabled",true);
+				$("#nova_selecao").removeAttr("value");
+			}
+			if($(this).val()=="4")
+				$("#nova_selecao").removeAttr("disabled");
+		});
+
+		$("#btbuscadetalhada").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none', 'href':'#buscadetalhada'});
+		$("#various1").fancybox({'titlePosition': 'inside','transitionIn': 'none','transitionOut': 'none'});
+		$("#importa_xls").fancybox({
+            'transitionIn': 'none',
+            'transitionOut': 'none',
+            'titlePosition': 'over',
+            'type': 'iframe',
+            'width': '90%',
+            'height': '90%',
+            'autoScale': false
+        })
+		$("a[rel=visualizar]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false
+	//'content' : $("#visualizar").html()
+});
+
+
+
+		$("a[rel=example_group]").fancybox({
+
+			'transitionIn'		: 'none',
+
+			'transitionOut'		: 'none',
+
+			'titlePosition' 	: 'over',
+
+			'type': 'iframe', 'width': '90%','height': '90%','autoScale': false,
+
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+
+				return '<span id="fancybox-title-over">' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
+
+			}
+		});
+	});
+
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+
+function executa_toggleInativo(prd_codigo)
+{
+	campo = "#toggleInativo_" + prd_codigo;
+
+	prd_inativo =$(campo).val();
+
+	toggleInativo(prd_codigo,prd_inativo);
+
+			if (prd_inativo == 'N') {
+					$('#toggleInativo_'+prd_codigo).val('S');
+				}else{
+					$('#toggleInativo_'+prd_codigo).val('N');
+				}
+}
+
+
+
+	function toggleInativo(prd_codigo,prd_inativo) {
+
+
+	campo= "#imgbloqueio_" + prd_codigo;
+	campo2= "#icon_toggleInativo_" + prd_codigo;
+
+	if(prd_inativo == "")
+		prd_inativo = 'N';
+
+	jQuery.ajax({
+		url: "tprodutolista.php",
+		type: "POST",
+		dataType: "html",
+		data: {
+			prd_codigo:prd_codigo,
+			prd_inativo2: prd_inativo
+		},
+		success: function(resposta) {
+			console.log(resposta);
+
+
+			if(prd_inativo == "S"){
+
+
+				jQuery(campo).attr("title","Desativar")
+				jQuery(campo2).removeClass("text-danger");
+				jQuery(campo2).addClass("text-success");
+			}
+			if(prd_inativo != "S"){
+				jQuery(campo).attr("title","Ativar")
+				jQuery(campo2).removeClass("text-success");
+				jQuery(campo2).addClass("text-danger");
+			}
+		}
+	});
+}
+
+
+ function adicionaFavoritos(url, uid, action) {
+
+  jQuery.ajax({
+    url: "funcoes.jquery.php",
+    type: "POST",
+    dataType: "html",
+    data: {
+      uri :url,
+      acaojq: action,
+      userid: uid,
+      menu_add: 'Produtos'
+    },
+    success: function(resposta) {
+       var result = JSON.parse(resposta);
+
+       console.log(result)
+
+      if(result.status == "success"){
+
+         if (result.action =='add') {
+             $("#btn-v2").attr('data-title', 'Página já pertece aos seus Favoritos!');
+           $('.fa-heart').css('color','#a900ff');
+         }else{
+           $('.fa-heart').css('color','#fff');
+           $("#btn-v2").attr('data-title', 'Clique para adicionar essa página aos seus Favoritos');
+         }
+
+         $("#success-alert").text(result.msg);
+         $("#success-alert").fadeTo(6500, 500).slideUp(500, function() {
+                     $("#success-alert").slideUp(8500);
+                 });
+
+                  setTimeout(function() {
+              location.reload();
+        }, 4501);
+
+
+      }
+
+    }
+  });
+
+  }
+
+ function mostra_esconde(){
+	mostra('div_buscadetalhada');
+	fecha('bt_buscadetalhada');
+	mostra('bt_buscadetalhada2')
+}
+function esconde_mostra(){
+	fecha('div_buscadetalhada');
+	mostra('bt_buscadetalhada');
+	fecha('bt_buscadetalhada2')
+}
+
+
+
+
+$('.prod-li-submenu').hover(function(){
+  	 $('.submenu').slideToggle();
+ })
+
+</script>
+</tr>
+    	<tr>
+    	<td colspan=7 style='text-align: right'><b>Totais</b></td><td><b>29.942,95</b></td><td><b>29.942,95</b></td><td><b>-79,00</b></td>
+    	<td colspan=10></td>
+    	</tr>
+    	</table>
+<input type="hidden" name="ordena" value="2">
+<input type="hidden" name="x" value="false">
+<input type="hidden" name="exporta_tipo" value="1">
+<input type="hidden" name="exporta_tipo2" value="1">
+<input type="hidden" name="nova_slc" value="1">
+<input type="hidden" name="acao" value="">
+
+<input type="hidden" name="tabela" value="tproduto">
+<input type="hidden" name="dirpadroes" value="cadastro">
+
+<!-- <a id="various1" href="#inline1"></a></li> -->
+<div class="l-box" style="display: none;">
+</div>
+	<div id="inline1" style="width:auto;height:auto;overflow:auto; display: none">
+		<div class="titulo">Selecione o que deseja exportar</div>
+		<div style="clear:both"></div>
+        <p style="margin: 20px;line-height: 20px;text-align: left;" >
+            <input type="radio" name="radexp" id="rad_1" value="1" checked> Exportar Apenas os Produtos Selecionados<br>
+            <input type="radio" name="radexp" id="rad_2" value="2"> Exportar o Resultado da Pesquisa<br>
+            <input type="radio" name="radexp" id="rad_3" value="3"> Exportar Todos os Produtos<br>
+            <input type="radio" name="radexp" id="rad_4" value="4"  > Exportar Seleções
+            <input type="text" name="nova_selecao" id="nova_selecao" value="" placeholder="1-5,7,9" disabled>
+        </p>
+        <p style="text-align: center;">
+            <button type=button onclick="exportar(1)">Exportar para o Excel (.xls)</button>
+                        <button type=button onclick="exportar(2)">Exportar para o Inventário</button>
+        </p>
+		<table>
+					</table>
+	</div>
+
+
+
+
+<script type="text/javascript">
+
+ let busca = false;
+    $('.btn-buscadetalhada').click(function(){
+
+        $('.mostrar-busc-detalhada').slideToggle(400,function(){
+
+            if (busca == false) {
+                $('.btn-buscadetalhada i ').attr('class','fas fa-arrow-up');
+                busca = true;
+                return;
+            }
+            if (busca == true) {
+                $('.btn-buscadetalhada i ').attr('class','fas fa-arrow-down');
+                busca = false;
+                return;
+            }
+
+        });
+    });
+
+	function calcularEstoque(prd_codigo,logloja,decimais) {
+		if(prd_codigo == 'todos'){
+			document.formulario.action='tprodutolista.php';
+			document.getElementById('estoquetotal').value='S';
+			document.formulario.submit();
+		} else {
+			vapaj_calcularEstoque(prd_codigo,logloja,decimais);
+		}
+	}
+
+
+	function apagaProdutoUnidade(prd_codigo) {
+		$.ajax({
+			url: "../funcoes/funcoes.jquery.php",
+			type: "POST",
+			dataType: "json",
+			data: {
+				prd_codigo: prd_codigo,
+				acao:"apagar-pru"
+			}
+		});
+	}
+
+
+	function verificaProdutoUsado(prd_codigo, prd_nome, params) {
+
+        $.ajax({
+            url: 'funcoes.jquery.php?acaojq=verificaProdutoUsado',
+            method:"POST",
+            data:{
+                prd_nome : prd_nome,
+                prd_codigo: prd_codigo
+            },
+            success:function(data){
+                let json = JSON.parse(data)
+                console.log(data);
+                if (json.status == 200) {
+                    // Redireciona para deletar
+                    window.location = "../acoes/deleta.php?" + params
+                } else if (json.status == 500) {
+                    document.getElementById('alert_msg').innerHTML = json.alert;
+                }
+            }
+        });
+	}
+
+/**
+ * Função responsavel por Exibir o Live Search dos fornecedores
+ */
+$('.auto_fornecedor').keypress(function(){
+
+let digitos = $(this).val();
+let mostrar = 'list_fornecedor';
+
+if (digitos.length > 1) {
+    $.ajax({
+    url: '../financeiro/funcoes.jquery.php?autocomplete=N&acaojq=buscafornecedor',
+    type: 'GET',
+    data: { term: digitos },
+    success: function (datav) {
+        datav = JSON.parse(datav);
+        let li = '';
+        if (datav == null) {
+            li += '<li>Nenhum Cliente Encontrado!</li>';
+            $('.'+mostrar).html(li);
+            $('.'+mostrar+' li').click(function(){
+                    $('.autocomplete').html('');
+            })
+            return;
+        };
+        for (var i = 0; i < datav['length']; i++) {
+            li += '<li value="' + datav[i].for_codigo + '">' + datav[i].for_nome + '</li>';
+        }
+        $('.'+mostrar).html(li);
+        $('.'+mostrar+' li').click(function(){
+            let valor = $(this).val();
+            let texto = $(this).text();
+            // Salva o Value do LI no INPUT HIDDEN
+            $('#prd_for_codigo').val(valor);
+            // Coloca o nome do fornecedor no campo de busca
+            $('.auto_fornecedor').val(texto);
+            $('.autocomplete').html('');
+        })
+        $('body').click(function(){
+            $('.autocomplete').html('');
+        })
+    }});
+}
+});
+
+
+
+</script>
+
+
+<script>
+// Função Responsavel por Fechar a mensagem de alerta
+// document.getElementById("closeAlert").onclick = function() {closeAlert()};
+function closeAlert() {
+    document.getElementById("divAlert").style.display = 'none';
+}
+
+
+    // Funcao para mover th de .lista no topo da pagina
+    $(window).on("scroll load", function() {
+        // alert()
+        if ($(".mydivclass")[0]) {
+            var tabela_top = $(".lista").offset().top;
+            var window_top = $(this).scrollTop() + $(".fixed-header").height();
+
+            $(".lista th").css({
+                'top': tabela_top - window_top <= 0 ? (window_top - tabela_top) + 'px' : '0',
+                'z-index': '9'
+            });
+        }
+    });
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    }
+  });
+}
+
+
+
+
+
+</script>
+
+
+
+</div>
+
+<br><Br><Br>
+
+</div>
+</div>
+</div>
+
+
+
+<br><Br><Br><br><br><br>
+</form>
+
+<footer id="footer" class="nao_imprimir" style="text-align: center;" >
+
+    <a href="http://www.vapnet.com.br">www.vapnet.com.br</a>&copy; Vapnet Softwares Ltda - Todos os direitos reservados.</footer>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>:: ERP - SOFTWARE GERENCIADOR ADMINISTRATIVO INTEGRADO � WEB ::</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">        <link href="stilo.css" type="text/css" rel="stylesheet">
+    <script src="../acoes/js/jquery.js"></script>
+  <style>
+    .page {
+	page-break-before: always;
+    }
+
+  </style>
+  <style media="print">
+.im1{display='none'}
+.buscaform{display='none'}
+  </style>
+<link rel="stylesheet" href="custom.css">
+<script src="../../erp/classes/shortcuts.js"></script>
+
+<script language="javascript">
+function fechartela()
+{
+
+    	window.close();
+}
+
+shortcut("f4",function() {
+    fechartela();
+});
+
+</script>
+
+</head>
+<body>
+<form name="formulario" id="formulario" method="post" action="" >
+<link rel="stylesheet" type="text/css" href="bootstrap.css">
+<style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .message-container {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 30px auto;
+    }
+
+    .message-container p {
+      margin-bottom: 10px;
+    }
+
+    .cta-button {
+      background-color: #F7740F;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 25px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #A21F00;
+    }
+
+    .btn-adquirir {
+      padding: 10px;
+      display: inline;
+      text-align: right;
+    }
+    h4{
+    	float: left;
+    	display: inline;
+    }
+  </style>
+<div class="container mt-5">
+<div style="width:100%;text-align: right;margin-top: 30px;">
+	<h4><b>Modulo: CRM V4</b></h4>
+	<div class="btn-adquirir">
+	  <button class="cta-button" onclick="adiquirirModulo(38)">Adquirir M�dulo</button>
+	</div>
+</div>
+
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-primary" role="alert">
+       O Sistema de Gerenciamento de Relacionamento com o Cliente (CRM) � uma ferramenta poderosa que coloca voc� no comando de suas vendas e relacionamentos com os clientes. Ao acessar nossa plataforma de CRM, voc� desbloqueia uma s�rie de recursos projetados para impulsionar sua estrat�gia de vendas e proporcionar uma experi�ncia de cliente excepcional.<br><br>Benef�cios ao Cliente:<br><br>Personaliza��o Excepcional:<br><br>Ao acessar nossa plataforma, voc� ter� insights valiosos sobre as prefer�ncias e hist�rico de compra de cada cliente. Isso permite que voc� personalize suas abordagens e ofertas, aumentando as chances de fechar neg�cios.<br>Acesso Simplificado �s Informa��es:<br><br>Nunca perca um detalhe importante. Acesse rapidamente informa��es cruciais sobre seus leads e clientes, incluindo intera��es passadas, compras anteriores e necessidades espec�ficas.<br>Acompanhamento Eficiente:<br><br>Com a automa��o de tarefas, voc� poder� rastrear intera��es, agendar follow-ups e garantir que nenhum lead seja esquecido. Isso aumenta a efici�ncia e a produtividade da equipe de vendas.<br>An�lises Inteligentes:<br><br>A plataforma de CRM oferece an�lises de dados em tempo real, fornecendo insights sobre o desempenho de suas estrat�gias de vendas. Tome decis�es informadas e adapte suas abordagens conforme necess�rio.<br>Colabora��o Aprimorada:<br><br>Acesse informa��es compartilhadas sobre clientes e leads, facilitando a colabora��o entre diferentes membros da equipe de vendas. Isso garante uma abordagem coesa e alinhada.
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<script src="jquery.js"></script>
+<script type="text/javascript">
+	$('button').click(function(e){
+		e.preventDefault();
+	});
+
+	function adiquirirModulo(modulo)
+	{
+		window.location.href = 'telaFinalizarContratarModulo.html?modulo='+modulo;
+	}
+
+</script>
+
+
+</div>
+

@@ -1,0 +1,65 @@
+.light-simples-fechar
+{
+	position: absolute;
+	right: 0;
+	top: -3px;
+	color: black !important;
+	font-size: 18px;
+	z-index: 30;
+	cursor: pointer
+}
+.light-simples
+{
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	
+	background-color: rgba(0,0,0,.15);
+}
+
+.box-light-simples
+{
+	overflow-y: auto !important;
+	position: relative;
+	z-index: 101;
+	background: white;
+	padding: 20px;
+	position: absolute;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	border: 1px solid #ccc
+}
+.box-light-simples table
+{
+	padding: 10px;
+	width: 100% !important;
+	text-align: left;
+	border-collapse: collapse;
+}
+.box-light-simples thead th
+{
+	padding: 10px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	font-size: 14px;
+}
+.box-light-simples tbody td
+{
+	padding: 10px ;
+	border-bottom: 1px solid #ccc;
+}
+.box-light-simples h1
+{
+	
+	margin-bottom: 15px;
+}
+.box-light-simples .container
+{
+	height: auto !important;
+}
+

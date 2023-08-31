@@ -1,0 +1,426 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Rubik', sans-serif;
+}
+html,body{
+	height: 100%;
+}
+body::-webkit-scrollbar, .inicio{
+  width: 7px;               
+}
+.menu-lateral::-webkit-scrollbar{
+	width: 3px;
+}
+
+body::-webkit-scrollbar-track , .menu-lateral::-webkit-scrollbar-track, .inicio {
+  background: black;        
+}
+
+body::-webkit-scrollbar-thumb , .menu-lateral::-webkit-scrollbar-thumb .inicio{
+  background-color: #28A745;    
+}
+
+.clear{
+	clear: both;
+}
+.w10{
+	width: 10%
+}
+.w15{
+	width: 15%;
+}
+.w20{
+	width: 20%;
+}
+.w33{
+	width: 33.3%
+}
+.w50{
+	width: 50%;
+}
+.w75{
+	width: 75%;
+}
+.t-left{
+	text-align: left;
+}
+.t-right{
+	text-align: right;
+
+}
+.left{
+	float: left;
+}
+.right{
+	float: right;
+}
+.menu-lateral{
+	width: 80px;
+	float: left;
+	z-index: 20;
+	height: 100%;
+	background-color: white;
+	border-right: 1px solid #aaa;
+	overflow-x: hidden;
+	position: fixed;
+}
+.container-menu-lateral{
+	width: 250px;
+}
+.menu-lateral .n-logo{
+	background-color: #111;
+	padding: 5px 0;
+	
+}
+.menu-lateral .n-logo img{
+	width: 190px;
+	margin: 0 auto;
+	padding-left: 20px;
+}
+
+.menu-lista .lista-single a{
+	color: #444;
+	display: block;
+	padding: 15px 5px;
+	font-size: 15px;
+	font-weight: normal;
+	border-bottom: 1px solid #ccc ;
+	transition: 0.4s;
+	cursor: pointer;
+	text-decoration: none;
+
+}
+
+.menu-lista .lista-single a:hover{
+	color: #28a745;
+	border-bottom: 1px solid #28a745 ;
+	transition: 0.4s;
+	background-color: #eee
+
+}
+.menu-lista .lista-single i{
+	font-weight: normal;
+	font-size: 17px;
+	padding-left: 25px;
+	padding-right: 30px; 
+}
+.menu-lista .lista-single svg{
+	width: 20px;
+	margin-left: 24px;
+	margin-right: 28px; 
+	color: red
+}
+.lista-single .sub-lista{
+	display: none;
+}
+.lista-single .sub-lista a{
+	font-size: 14px;
+	background-color: #eee;
+	text-decoration: none;
+}
+.lista-single .sub-lista i{
+	font-size: 14px;
+	width: 70px;
+}
+.out-header{
+	background-color: white;
+	width: 100%;
+	right: 0;
+	z-index: 10;
+	height: 45.5px;
+	border-bottom: 1px solid #aaa;
+	position: fixed;
+
+}
+header{
+	text-align: right;
+	
+	width: calc(100% - 80px);
+	float: right;
+	background-color: white;
+	padding: 13px 2%
+}
+header .left{
+	text-align: left;
+	width: 30%;
+	float: left;
+	color: #444;
+}
+
+header .left i{
+	cursor: pointer;
+}
+header .right{
+	text-align: right;
+}
+
+header .right span{
+	padding-right: 30px;
+	font-size: 13px;
+	text-transform: uppercase
+}
+
+header .right a{
+	font-size: 13px;
+	text-transform: uppercase;
+	color: #111;
+	text-decoration: none;
+}
+
+header .right a:hover{
+	color: #28A745
+}
+/* PAGINA INICIO */
+.inicio{
+	width: 100%;
+	background-color: #eee;
+	height: 100%;
+	padding: 65px 30px 70px 100px;
+
+	float: right;
+	overflow-y: scroll;
+	padding-bottom: 70px
+	z-index: 300000;
+	clear: both;	
+}
+.inicio .info-topo{
+	width: 100%;
+	background-color: white;
+	padding: 10px 0
+}
+.info-topo .box-topo{
+	text-align: center;
+	float: left;
+	padding: 10px 12px;
+}
+.box-topo .box-topo-container{
+	width: 95%;
+	border: 1px solid #111;
+	padding: 25px 10px;
+	margin: 0 auto;
+	background-color: white;
+	border-radius: 10px;
+	font-weight: normal;
+}
+.box-topo h4{
+	text-transform: uppercase;
+	padding-bottom: 10px ;
+	text-align: left;
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 5px;
+}
+.box-topo-container i{
+	
+	font-size: 28px;
+	font-weight: normal;
+	float: right;
+	color: #28A745;
+}
+.box-conteudo{
+	padding: 10px 0;
+
+	text-align: left;
+	width: 80%;
+	margin: 0 auto
+
+}
+.box-conteudo .pendente{
+	color: #eb424d;
+}
+
+.box-conteudo .pago{
+	color: #4767e6;
+}
+.box-topo a{
+	text-decoration: none;
+	display: inline-block;
+	color: white;
+	width: 80%;
+	padding: 10px 15px;
+	border-radius: 5px;
+	margin-top: 15px;
+	cursor: pointer !important;
+	transition: 0.4s
+}
+.box-topo a.bg-green:hover{
+	background-color: #139458;
+	transition: 0.4s
+}
+.box-topo a.bg-green
+{
+	background-color: #17B069;
+}
+button, input[type=button]{
+	padding: 8px 25px;
+	border: 0;
+	background-color: #444;
+	color: white;
+	margin: 0 5px;
+	cursor: pointer;
+	transition: 0.4s;
+	font-size: 14px;
+}
+
+
+ button:hover, input[type=button]:hover, input[type=submit]:hover{
+	background-color: #111;
+	transition: 0.4s;
+}
+
+/* TclienteLista */
+.tclientelista-center{
+	background-color: white;
+}
+
+.tclientelista-center select,.tclientelista-center input[type=text]{
+	width: 150px;
+	padding: 8px 5px;
+}
+.tclientelista-center input[type=submit]{
+	padding: 8px 25px;
+	border: 0;
+	background-color: #444;
+	color: white;
+	cursor: pointer;
+	transition: 0.4s;
+}
+.tclientelista-center td{
+	font-size: 14px;
+	padding: 6px 2px;
+	text-transform: uppercase;
+}
+
+.tclientelista-table{
+	width: 100% !important;
+	background-color: white;
+}
+
+.tclientelista-table td{
+	padding: 5px 0;
+	color: #444 !important;	
+	font-size: 12px;
+}
+/* N BANKING*/
+.btn_nbanking{
+	padding: 10px 30px !important;
+
+}
+.box-title-fatura{
+	border: 1px solid #ccc; 
+	font-weight: 400 ;
+	font-size: 14px;
+	background: black;
+	color: white;
+}
+.box-title-fatura > div{
+	padding: 10px 5px;
+	border-right: 1px solid black;
+}
+.box-title-fatura > div:last-child , .fatura-valores > div:last-child{
+	border-right: 0;
+}
+.fatura-valores{
+	border: 1px solid #ccc;
+	border-top: 0;
+	
+}
+.fatura-valores > div{
+	padding: 6px 6px;
+	border-right: 1px solid #ccc
+}
+
+footer{
+	background-color: white !important;
+}
+@media screen and (max-width: 910px){
+	.w33{
+		width: 100%;
+	}
+}
+.header-btn{
+	padding: 10px 25px;
+	margin-right: 4px;
+	color: white !important;
+	border-radius: 4px;
+	position: relative;
+	top:1px;
+}
+.dashboard{
+	background-color: #02b35d;
+	transition: 0.4s;
+}
+.dashboard:hover{
+	background-color: #038c49;
+	transition: 0.4s;
+}
+.crm{
+	background-color: #FFA500;
+	transition: 0.4s
+}
+.crm:hover{
+	background-color: #d98d02;
+	transition: 0.4s
+}
+
+.sair{
+	background-color: #f03049;
+	transition: 0.4s
+}
+
+.sair:hover{
+	background-color: #d90b26;
+	transition: 0.4s
+}
+
+/*novos ajustes*/
+
+.menu-lateral {
+    overflow: auto !important;
+}
+
+.btndisable{
+	background-color: #ccccdd;
+}
+.menu-center{
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+
+.aviso_vermelho {
+    background: #fccac1;
+    color: #AC260F;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.aviso_amarelo {
+    background: #ffe9ad;
+    color: #826200;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.aviso_verde {
+    background: #effeb9;
+    color: #3C5A01;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.aviso_azul {
+    background: #d1e4f3;
+    color: #235685;
+    padding: 10px;
+    font-size: 12px;
+}
+
+.aviso_cinza {
+    background: #F2F2F2;
+    color: #424242;
+    padding: 10px;
+    font-size: 12px;
+}

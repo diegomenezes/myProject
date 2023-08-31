@@ -1,0 +1,728 @@
+
+<head>
+    <title>:: FRENTY ERP ::</title>
+    <link href="stilo.css" type="text/css" rel="stylesheet">
+    <link href="main.css" type="text/css" rel="stylesheet">
+    <link href="../erp_html/acoes/css/undefined/all.min.css" type="text/css" rel="stylesheet">
+
+    <!--  CSS PADRÃ‚O DO TITULO / BOTOES DO BUSCA / BUSCA RAPIDA  / NAS 3 VERSÃ”ES  -->
+    <link rel="stylesheet" type="text/css" href="padrao_menubusca.css">
+    <!-- ----------- -->
+
+      <!-- font google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="padrao.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+   <!-- End font google fonts -->
+
+    <meta charset="utf-8">
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="cima_js.js"></script>
+
+    <!--Script de Alerta-->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../funcoes/funcoes.alert.js"></script>
+
+<style>
+
+    * {
+        position: relative;
+    }
+    form{
+        margin: 0 auto;
+    }
+    .circular_image {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: blue;
+        display:inline-block;
+        vertical-align:middle;
+    }
+    .circular_image img{
+         width:100%;
+    }
+    table.lista {
+    z-index: 10;
+    }
+    .form_zindex{
+    z-index: 20;
+    }
+    .topocima_search{
+        top: -99px;
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 0 6px 3px #ccc, 0 0 12px 6px #ccc
+    }
+    .conteudo-page-v2{
+        margin-top: 54px ;
+    }
+    .topocima{
+        width: 100%;
+        background-color: white;
+        box-shadow: 0 0 6px 3px #ccc, 0 0 12px 6px #ccc
+    }
+    .times{
+        color: white;
+        width: 100%;
+        text-align: right;
+        margin-right: 29px;
+        margin-bottom: 10px;
+    }
+    .times i{
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .icon_wpp{
+        background-color: rgba(0,0,0,0) !important;
+    }
+    .icon_wpp:hover{
+        background-color: rgba(0,0,0,0) !important;
+    }
+    .trocar-usuario{
+        margin-right: 20px;
+        color: white
+    }
+     #btnempresa button{
+        cursor: pointer;
+         margin-left: 10px
+    }
+    .header-menu{
+        background: url('../../frontend/nfesistemas/imgs/header_frenty.JPG'),linear-gradient(to left, #00c1eb, #250048) !important;
+    }
+    .topo_secao .titulo{
+        background-color: #250048;
+        padding: 5px 10px;
+        color: white;
+        border-radius: 5px;
+    }
+    .btn-buscadetalhada-btn{
+        cursor: pointer;
+    }
+    .lista th{
+        background-color: #250048 !important;
+    }
+    form input[type=button],form input[type=submit],form button{
+        background-color: #250048 !important;
+
+    }
+    .btn-busca-detalhada {
+        color: #fff !important;
+        border-radius: 3px;
+        padding: 12px 25px;
+        font-size: 12px;
+         background-color: #250048 !important;
+        border-bottom: 3px solid #1b404f;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+/*TITULO*/
+.bg-blue-light {
+   background: url(../../frontend/nfesistemas/imgs/header_frenty.JPG),linear-gradient(to left, #00c1eb, #250048) !important;
+   background-blend-mode: hard-light;
+}
+.card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
+    position: relative;
+    min-width: 0;
+    border: 1px solid transparent;
+    border-radius: 0.6rem;
+}
+.card-body {
+    justify-content: space-between !important;
+    flex: 1 1 auto;
+    padding: 0.2rem 0.8rem;
+    font-family: "Poppins",Arial,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 1!important;
+    font-size: 11px;
+}
+.bg-blue-light:hover {
+    background-blend-mode: multiply !important;
+    -webkit-transform: scaleX(1);
+    -ms-transform: scaleX(1);
+    transform: scaleX(1);
+    transition: all .2s ease-in-out 0s;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+    margin-inline-start: 13px;
+    margin-inline-end: 13px;
+    color: white;
+    font-weight: bold;
+}
+
+/*TITULO*/
+.img-logo-fty{
+    width: 130px;margin-right: 40px;margin-left: 0 !important;position: relative;top: 3px
+}
+
+/*MENU*/
+.menu-a-cima{
+padding: 15px 17px 15px 37px !important;
+font-size: 13px !important;
+}
+.ln-hgt6{
+ line-height: 0.7em;
+}
+ .fmenu {
+    color: black;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    font-weight: 400 !important;
+    padding: 5px 0px 12px 9px !important;
+}
+.label-interno-menu{
+    background-color: #250048 !important;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: 900;
+}
+.label-interno-menu b{
+    color: white !important;
+    font-size: 10px;
+}
+#menu-env::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0em;
+    content: "";
+    border-top: 0.6em solid;
+    border-right: 0.4em solid transparent;
+    border-bottom: 0 solid;
+    border-left: 0.4em solid transparent;
+}
+
+#menu-env:hover::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0em;
+    content: "";
+    border-top: 0px solid !important;
+    border-right: 0.4em solid transparent;
+    border-bottom: 0.6em solid !important;
+    border-left: 0.4em solid transparent;
+}
+/*MENU*/
+
+/*MENU PRODUTO*/
+.prod-ul li a{
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+}
+.i-favoritos{
+    padding: 6px;
+    margin-left: -40px;
+}
+.div-session{
+    left: 30%;transform: translate(-25%, -50%);margin-bottom: 60px!important;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+.alert {
+position: relative;
+    padding: 0.8rem 2.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid;
+    border-radius: 0.5rem;
+    font-size: 13px;
+}
+.topo_secao{
+overflow: inherit;
+}
+.btn-v2{
+   background-color: #250048 !important;
+     padding: 0px !important;
+}
+
+    </style>
+
+
+</head>
+<BODY  leftmargin=0 topmargin=0 marginwidth=0 marginheight=0>
+
+<!--INICIO LAYOUT NOVO-->
+<form id="formulario" name="formulario" method="post" action=""   >
+<div  class="fixed-header nao_imprimir" id="fixed-header" >
+     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="nao_imprimir" >
+        <tr >
+            <table width="100%" cellpadding=0 cellspacing=0 border=0 class="header-menu nao_imprimir">
+                <tr >
+                    <td  width="20%" class="nao_imprimir">
+                        <div style="background-color: rgba(0,0,0,0);" class="header-information-top">
+                            <div class="container-header-information">
+                                <div class="left-section">
+                                                                    <div class="toggle-menu toggle-menu-configuration">
+                                        <i class="far fa-bookmark"></i>
+                                    </div>
+                                    <div id="toggle-menu-configuration" class="toggle-menu-configuration">
+                                        <i class="fas fa-bars"></i>
+                                    </div>
+                                    <div class="toggle-menu-configuration" id="toggle-menu-configuration-busca">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+
+                                </div>
+
+                                <div class="right-section">
+								 <div id="vempresa" valign="middle">
+
+
+						 <b style='color:white'>Eduardo teste Banco</b></a>&nbsp;
+
+                    </div>
+
+
+
+
+                                                                            <a class="btn-app-3" href="../dashboard/index.php"><i class="fas fa-tachometer-alt"></i>&nbsp;&nbsp;DashBoard</a>
+                                                                        <a class="btn-app-3" href="javascript:suportewhats()" ><i class="fas fa-tachometer-alt"></i>&nbsp;&nbsp;Suporte</a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                </tr>
+            </table>
+            </td>
+        </tr>
+
+        <tr  class="nao_imprimir">
+            <td height="50" background="../img/layout/sub_menu.jpg" nowrap>
+
+                <div class="topocima" id="topocima">
+                    <div class="container container-topocima">
+                        <div class="">
+                            <nav id="nav" class="nao_imprimir">
+                                <ul >
+
+
+<!--INICIO JS LAYOUT NOVO-->
+<script>
+    let menuTopo;
+            menuTopo = false;
+
+     menuTopo = false;
+
+    $('.toggle-menu').click(function(){
+
+        $('.menu').toggleClass('menu-in');
+        $('.container-table').toggleClass('table-small');
+        $('.header-information-top').toggleClass('small-header-information');
+        $('.toggle-menu').toggleClass('toggle-menu-rotate');
+        $('.container-page-settings').toggleClass('container-page-settings-small');
+    });
+    $('#toggle-menu-configuration').click(function(){
+        //alert('aqui');
+        if (menuTopo == false) {
+            $('.topocima').addClass('topocima-in');
+            $('.topocima_search').removeClass('topocima-in');
+            $('.container-page-settings').addClass('container-page-settings-up');
+            $('#toggle-menu-configuration').addClass('toggle-menu-configuration-rotate');
+            menuTopo = true;
+        }else{
+            $('.topocima').removeClass('topocima-in');
+            if ($('.topocima_search').hasClass('topocima-in') == false) {
+                $('.container-page-settings').removeClass('container-page-settings-up');
+            }
+            $('#toggle-menu-configuration').removeClass('toggle-menu-configuration-rotate');
+            menuTopo = false;
+        }
+    });
+    $('#toggle-menu-configuration-busca').click(function(){
+        if (menuTopo == false) {
+            $('.topocima_search').addClass('topocima-in');
+            $('.topocima').removeClass('topocima-in');
+            $('.container-page-settings').addClass('container-page-settings-up');
+            $('#toggle-menu-configuration-busca').addClass('toggle-menu-configuration-rotate');
+            menuTopo = true;
+        }else{
+            $('.topocima_search').removeClass('topocima-in');
+            if ($('.topocima').hasClass('topocima-in') == false) {
+                $('.container-page-settings').removeClass('container-page-settings-up');
+            }
+            $('#toggle-menu-configuration-busca').removeClass('toggle-menu-configuration-rotate');
+            menuTopo = false;
+        }
+    });
+</script>
+
+
+<!--FIM JS LAYOUT NOVO-->
+
+
+<li class="menu-drop">
+<a class="menu-a-cima"  href="#"><span class="menu-label"><i class="fas fa-plus-circle"></i>&nbsp;&nbsp;Cadastro</span></a>
+<ul>
+
+<a href="../capa/inicio.php" class="fmenu" target="_top">Inicio</a><li><hr></li><a href="../cadastro/tclientelista.php" class="fmenu" target="_top">Clientes</a><a href="../cadastro/tprodutolista.php" class="fmenu" target="_top">Produtos</a><a href="../cadastro/tfornecedorlista.php" class="fmenu" target="_top">Fornecedores</a><a href="../cadastro/ttransportadoraslista.php" class="fmenu" target="_top">Transportadoras</a><li><hr></li><a href="../estoque/tosestoquelista.php" class="fmenu" target="_top">O.S.</a><li><hr></li><a href="../estoque/tretiradainventariolista.php?tipo=cadastro" class="fmenu" target="_top">Invent�rio</a><a href="../estoque/ttrocalista.php?tipo=cadastro" class="fmenu" target="_top">Trocas</a><li><hr></li>
+
+
+                                    </ul>
+                                </li>
+                                <li class="menu-drop">
+                                    <a class="menu-a-cima" href="#"><span class="menu-label">Opera��o</span></a>
+                                    <ul>
+                                        <li><table border=0 cellpadding=0 cellspacing=0 style='width:100%;' ><tr><td nowrap><a href="../financeiro/tvendalista.php?vnd_tipo=1" class="fmenu" target="_top">Vendas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td></tr> <tr><td><a href="../financeiro/tvendalista.php?vnd_tipo=2" class="fmenu" target="_top">Or�amento</a></td></tr> <tr><td><a href="../financeiro/tcompralista.php?vnd_tipo=3" class="fmenu" target="_top">Compras</a></td></tr> <tr><td></td></tr></table></li><li><hr></li><li><table border=0 cellpadding=0 cellspacing=0 style='width: 100%;'><tr><td><a href="../financeiro/tnotafiscallista.php" class="fmenu" target="_top">NFe - Com�rcio&nbsp;&nbsp;&nbsp;</a></td></tr></table><a href="../financeiro/tnotafiscalservicolista.php" class="fmenu" target="_top">NFSe - Servi�o</a><a href="../financeiro/tnotafiscalfornecedorlista.php" class="fmenu" target="_top">NFe dos Fornecedores</a><li><hr></li><a href="../financeiro/tfaturasareceberlista.php?fatr_status=-1" class="fmenu" target="_top">Contas a Receber</a><a href="../financeiro/tfaturasapagarlista.php" class="fmenu" target="_top">Contas a Pagar</a><a href="../financeiro/trecursolista.php" class="fmenu" target="_top">Fluxo de Caixa</a><li><hr></li><a href="../relatorios/relcomissao.php" class="fmenu" target="_top">Comisss�o</a></ul>
+</li>
+<li class="menu-drop">
+	<a class="menu-a-cima" href="#"><span class="menu-label">Relat�rios</span></a>
+	<ul>
+		<li>
+		<table border=0 class='ln-hgt6'>
+		<tr>
+		<td nowrap=4><a href="../relatorios/resumododia.php" class="fmenu" target="_top">Resumo do Dia</a></td><td><a href="../relatorios/relestoquevenda.php" class="fmenu" target="_top">Central Vendas </a></td>
+		</tr>
+		</table>
+		</li> <li class='label-interno-menu'><b>ESTOQUE</b></li><li><table border=0 class='ln-hgt6'><tr> <td nowrap=4><a href="../relatorios/relestoque.php?tipo=cadastro" class="fmenu" target="_top">Quantidade em Estoque</a></td><td><a href="../relatorios/relmovimentoestoque.php?tipo=cadastro" class="fmenu" target="_top">Movimenta��o</a></td></tr><tr><td><a href="../relatorios/relproduto.php?tipo=cadastro" class="fmenu" target="_top">Produtos Vendidos</a></td><td><a href="../relatorios/relvendadetalhada.php?tipo=cadastro" class="fmenu" target="_top">Venda Detalhada</a></td></tr><tr><td><a href="../relatorios/relcompras.php" class="fmenu" target="_top">Compra por Fornecedor</a></td><td nowrap=4><a href="../relatorios/comprasanalise.php?tipo=cadastro" class="fmenu" target="_top">An�lise de Compras</a></td></tr></table></li>  <li class='label-interno-menu' ><b>FINANCEIRO</b></li><li><table border=0 class='ln-hgt6'><a href="../relatorios/relfinanceiro.php?tipo=cadastro" class="fmenu" target="_top">Comparativo Anual</a>
+        <td>
+
+        </td>
+        <tr><td nowrap><a href="../relatorios/rel_recebimentoporsetor.php?tipo=cadastro" class="fmenu" target="_top">Recebimento por Setor</a></td><td nowrap=4><a href="../financeiro/tfaturasapagarreceber.php?tipo=cadastro" class="fmenu" target="_top">Receita X Despesa   </a></td></tr><tr> <td nowrap><a href="../dashboard2/dashboard_dre.php?rel=3&consultoria=S&emp_codigo=100165" class="fmenu" target="_top">D.R.E.</a></td><td nowrap=4><a href="../relatorios/tfinanceiro_mes_ano_dia.php" class="fmenu" target="_top">Auditoria</a></td></table></li></td></tr>  <li class='label-interno-menu' ><b>GEST�O</b></li><a href="../relatorios/relcrm.php?tipo=cadastro" class="fmenu" target="_top">Clientes Inativos</a><a href="../relatorios/relos.php?tipo=cadastro" class="fmenu" target="_top">Ordem de Servi�o</a>		</ul>
+		</li>
+		<li class="menu-drop">
+			<a class="menu-a-cima" href="#"><span class="menu-label">Configura��es</span></a>
+			<ul>
+	<a href="../manutencao/admin_configura.php" class="fmenu" target="_top">Configura��o Especial</a><li><a href="../manutencao/talterasenha.php" class="fmenu" target="_top">Alterar Senha</a></li><a href="../manutencao/tusuariolista.php" class="fmenu" target="_top">Cadastro de Usu�rios</a><li><hr></li><a href="../manutencao/timpostolista.php" class="fmenu" target="_top">Calculo de Impostos</a><a href="../manutencao/setup.php" class="fmenu" target="_top">Setup</a><li><hr></li><a href="../cadastro/tcondicaolista.php" class="fmenu" target="_top">Condi��es de Pagamento</a><a href="../financeiro/vertipodespesa.php" class="fmenu" target="_top">Centro De Custo</a><a href="../cadastro/verncm.php" class="fmenu" target="_top">NCM e CEST</a><a href="../financeiro/vernatureza.php" class="fmenu" target="_top">Natureza de Opera��o</a>
+                                    </ul>
+                                </li>
+                                <li class="menu-drop">
+                                    <a class="menu-a-cima" href="#"><span class="menu-label">Ajuda</span></a>
+                                    <ul>
+
+                                        <li><a href="../capa/ajuda.php" class="fmenu nao_imprimir" target="_top">T�picos De Ajuda</a></li>
+                                        <li><a href="../cliente/tchamadoexibelista.php?nick=gestor" class="fmenu nao_imprimir" target="_top">Suporte e Help Desk</a></li>
+                                        <li><a href="../manutencao/contador.php" class="fmenu nao_imprimir" target="_top">Contabilidade</a></li>
+                                        <li><a href="../capa/pesq-info.php" class="fmenu nao_imprimir" target="_top">Avisos e Informativos</a></li>
+                                        <li>
+                                            <hr>
+                                        </li>
+                                        <li><a href="../capa/faturaspendentes.php?exibe=S" class="fmenu nao_imprimir" target="_top">Mensalidade do Sistema</a></li>
+
+                                    </ul>
+                                </li>
+                                <li class="menu-drop">
+                                    <a href="../capa/logoff.php"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                                </li>
+
+
+
+
+
+
+                              </ul>
+                        </nav>
+                    </div>
+
+                </div>
+
+                </div>
+
+
+
+<!--- MENU DE BUSCA --->
+
+
+
+<style type="text/css">
+	.user-information-btn a {
+  padding: 0.1rem 0.9rem;
+    background: var(--bg-roxo) !important;
+    border-radius: 3px;
+    margin-top: 0.5rem;
+    /* background: rgb(190, 19, 19) !important; */
+    color: var(--color-font-branca) !important;
+    transition: all .2s ease-in-out;
+}
+</style>
+    <div  class="topocima_search" id="topocima">
+        <div class="container-search  container-topocima">
+
+        </div>
+    </div>
+</div>
+
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- MENU LATERAL -->
+<div class="menu">
+    <div class="times">
+            <i id="times" class="fas fa-times"></i>
+        </div>
+    <div class="user-information">
+        <div class="user-foto circular_image">
+            <img src="../imagens/profile-man.jpg" alt="">
+        </div>
+        <p>Voc� est� logado como</p>
+
+
+        <p>Admin</p>
+        <a href="../capa/logoff.php">Sair</a>
+    </div>
+<br>
+<div class="user-information-btn">
+<p style="margin-right:30px;line-height: 24px;">Favoritos:<br>
+    </p>
+</div>
+
+        <p>www.frenty.com.br</p>
+</div>
+
+
+    </td>
+
+    <td  class="dir nao_imprimir" nowrap width="20%">&nbsp;</td>
+
+    </tr>
+    </table>
+    </td>
+    </tr>
+   <script type="text/javascript">
+       $('.times').click(function(){
+        $('.menu').removeClass('menu-in');
+        $('.container-table').removeClass('table-small');
+        $('.header-information-top').removeClass('small-header-information');
+        $('.toggle-menu').removeClass('toggle-menu-rotate');
+        $('.container-page-settings').removeClass('container-page-settings-small');
+    })
+   </script>
+
+<div  class='conteudo-page-v2'><div class='container-cont'><link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<style type="text/css">
+		.header-information-top{
+			height: 70px;
+			background-color: #f7740f !important;
+		}
+		#nav hr {
+			margin: 0 !important;
+			padding: 0 !important;
+			margin: 5px 0 !important;
+		}
+
+        .master-module {
+            background-color: #f7740f;
+            font-size: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .active-module {
+            background-color: #ff8f00;
+            font-size: 16px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .inactive-module {
+            background-color: #e0e0e0;
+            font-size: 14px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .module {
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            height: 200px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .active-module {
+            background-color: #ff8f00;
+            font-size: 16px;
+        }
+        .inactive-module {
+            background-color: #e0e0e0;
+            font-size: 14px;
+            color: black;
+        }
+        .module h3{
+        	margin-left: 0;
+        	font-weight: bold;
+        }
+	</style>
+	<div class="container mt-4">
+
+		<div class="row"><div class="col-md-12 text-center" onclick="abrirTelaProdutos(0,0)" title="Acessar Modulo!">
+		                <div class="module master-module">
+		                <h2>PDV Web Produtos ( vers�o Online - 5000 vendas )</h2>
+		                    <h5>Modulo Ativo</h5>
+		                    <p>Aqui voc� ter� controle total sobre a gest�o dos seus os produtos, gerenciamento de estoque..</p>
+		                </div>
+		            </div><div class="col-md-4" onclick="abrirTela(51)" title="Acessar Modulo!">
+		                <div class="module active-module">
+		                <h3>Funil de Compras</h3>
+		                    <h5>Modulo Ativo</h5>
+		                    <p>Guia passo a passo para compras, do interesse ah aquisi��o, de forma direcionada.</p>
+		                </div>
+		            </div><div class="col-md-4" onclick="abrirTelaContratar(2,'Conta Gestor Financeiro')" title="Conhecer Modulo!">
+		                <div class="module inactive-module">
+		                <h3>Conta Gestor Financeiro</h3>
+		                    <h5>Modulo Inativo</h5>
+		                    <p>Aqui, voc� ter� todas as ferramentas necess�rias para impulsionar suas atividades de vendas e aument</p>
+		                </div>
+		            </div><div class="col-md-4" onclick="abrirTelaContratar(38,'CRM V4')" title="Conhecer Modulo!">
+		                <div class="module inactive-module">
+		                <h3>CRM V4</h3>
+		                    <h5>Modulo Inativo</h5>
+		                    <p>Aqui, voc� ter� todas as ferramentas necess�rias para aprimorar o relacionamento com seus clientes</p>
+		                </div>
+		            </div></div>    <br><br>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-md-3 w50">
+                <div class="card">
+        			<div class="card-body">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="jquery.js"></script>
+    <script type="text/javascript" src="fancybox/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+	<link rel="stylesheet" type="text/css" href="fancybox/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+ 	<link rel="stylesheet" href="fancybox/style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script type="text/javascript">
+
+			function abrirTelaProdutos(modulo,nomemodulo)
+			{
+				$.fancybox({
+		            'transitionIn': 'none',
+		            'transitionOut': 'none',
+		            'titlePosition': 'over',
+		            'type': 'iframe',
+		            'width': '90%',
+		            'height': '90%',
+		            'href': 'produtos.html?modulo='+modulo+'&nomemodulo='+nomemodulo,
+		            'autoScale': false,
+		            'titleFormat': function(title, currentArray, currentIndex, currentOpts) {
+		                return '<span id="fancybox-title-over">Modulo: '+nomemodulo+'</span>';
+		            }
+		        });
+		}
+
+
+		function abrirTelaContratar(modulo,nomemodulo)
+		{
+			$.fancybox({
+	            'transitionIn': 'none',
+	            'transitionOut': 'none',
+	            'titlePosition': 'over',
+	            'type': 'iframe',
+	            'width': '90%',
+	            'height': '90%',
+	            'href': 'telaContratarModulo.html?modulo='+modulo+'&nomemodulo='+nomemodulo,
+	            'autoScale': false,
+	            'titleFormat': function(title, currentArray, currentIndex, currentOpts) {
+	                return '<span id="fancybox-title-over">Modulo: '+nomemodulo+'</span>';
+	            }
+	        });
+		}
+		$(document).ready(function() {
+	    // Dados de exemplo (substitua pelos seus próprios dados)
+	    const products = ['Produto A', 'Produto B', 'Produto C'];
+	    const salesData = [150, 300, 200];
+
+	    // Configuração do gráfico
+	    const ctx = document.getElementById('salesChart').getContext('2d');
+	    const salesChart = new Chart(ctx, {
+	        type: 'pie',
+	        data: {
+	            labels: products,
+	            datasets: [{
+	                label: 'Vendas por Produto',
+	                data: salesData,
+	                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+	                borderColor: 'rgba(54, 162, 235, 1)',
+	                borderWidth: 1
+	            }]
+	        },
+	        options: {
+	            scales: {
+	                y: {
+	                    beginAtZero: true
+	                }
+	            }
+	        }
+	    });
+
+	    /* ESQUEMA PARA MUDAR A COR AO DEIXAR O MOUSE HOVER NOS MODULOS, PEGA A COR DINAMICAMENTE E DEIXA MAIS ESCURO*/
+	    $(".module").hover(
+	       function() {
+	        var originalColor = $(this).css("background-color");
+	        $(this).data("original-color", originalColor); // Armazena a cor original
+	        $(this).css("background-color", darkenColor(originalColor));
+	       },
+	      function() {
+	        var originalColor = $(this).data("original-color"); // Obtém a cor original
+	        $(this).css("background-color", originalColor); // Define a cor de volta ao normal
+	      },
+
+	      function() {
+	        var originalColor = $(this).css("background-color");
+	        $(this).css("background-color", darkenColor(originalColor));
+	      },
+	      function() {
+	        var originalColor = $(this).css("background-color");
+	        $(this).css("background-color", originalColor);
+	      }
+	    );
+
+	    function darkenColor(color) {
+	    	let c = rgbToHex(color);
+	    	var num = parseInt(c.slice(1), 16);
+			var amount = -30;
+			var R = (num >> 16) & 255;
+			var G = (num >> 8) & 255;
+			var B = num & 255;
+			R = Math.max(0, R + amount);
+			G = Math.max(0, G + amount);
+			B = Math.max(0, B + amount);
+			return "#" + (R << 16 | G << 8 | B).toString(16).padStart(6, '0');
+	    }
+
+	    function rgbToHex(rgb) {
+			var rgbArray = rgb.substring(4, rgb.length - 1).split(", ");
+			return "#" + Number(rgbArray[0]).toString(16).padStart(2, "0") +
+			           Number(rgbArray[1]).toString(16).padStart(2, "0") +
+        		       Number(rgbArray[2]).toString(16).padStart(2, "0");
+		}
+
+
+	});
+
+
+
+	</script>
+
+
+
+
+
